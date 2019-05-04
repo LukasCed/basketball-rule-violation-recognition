@@ -47,7 +47,7 @@ Krepšinio dinamiškumas, intensyvumas ir populiarumas lemia tai, jog teisėjų 
  \item žaidėjas dėvi ryškius batus ir pirštines.
 \end{itemize}
 
-Darbe bus išanalizuoti probleminiai faktoriai, sukeliantys trukdžių vaizdo atpažinime, pasirinktos metodikos, padedančios atpažinti kamuolio poziciją rankų atžvilgiu bei žingsnius, bei pritaikytas algoritmas atpažinti, kada pažeista žingsnių taisyklė. Darbo tikslas – sukurti programinę įrangą, gebančią atpažinti žingsnių taisyklės pažeidimą (šiame darbe bus remiamasi NBA taisyklėmis). Darbo užduotys:
+Darbe bus išanalizuoti probleminiai faktoriai, sukeliantys trukdžių vaizdo atpažinime, pasirinktos metodikos, padedančios atpažinti kamuolio poziciją rankų atžvilgiu bei žingsnius, bei pritaikytas algoritmas atpažinti, kada pažeista žingsnių taisyklė. Darbo tikslas – sukurti programinę įrangą, gebančią atpažinti žingsnių taisyklės pažeidimą (šiame darbe bus remiamasi NBA taisyklėmis). Darbo uždaviniai:
 \begin{itemize}
  \item Sukurti žingsnių bei kamuolio mušimo atpažinimo algoritmą.
  \item Remiantis skaitmeniniu vaizdo apdorojimo technologijomis algoritmą įgyvendinti.
@@ -56,14 +56,14 @@ Darbe bus išanalizuoti probleminiai faktoriai, sukeliantys trukdžių vaizdo at
 
 \section{Naudoti įrankiai ir metodai}
 \subsection{Programavimo kalba ir bibliotekos}
-Šiam darbui atlikti pasirinkta Python programavimo kalba. Dėl Python paprastumo ir duomenų analizės specialistų polinkio naudoti šią kalbą internete gausu straipsnių ir kitų išteklių būtent šiai kalbai. Python leidžia susifokusuoti į aukšto lygments abstrakcijas, kas labai praverčia kompiuterinėje regoje analizuojant ir darant operacijas su paveikslėliais, vaizdo medžiaga ir panašiai. Be to, kadangi Python yra interpretuojama programavimo kalba – jos nereikia kompiliuoti – atsiranda galimybė programuoti interaktyviai, t.y. greitai išgauti rezultatus iš įvairių skaičiavimų nevykdant iš naujo jau parašytos programos. 
-Kompiuterinės regos algoritmų įgyvendinimui nagrinėtos dvi bibliotekos: SimpleCV ir OpenCV. OpenCV – plačiai naudojama kompiuterinės regos užduotims spręsti skirta biblioteka, kuri yra nemokama. OpenCV parašyta C++ kalba, tačiau galima naudoti OpenCV su  Python apvalku ant C++ rašyto pagrindo. Taip pasiekiamas artimas C++ efektyvumas kartu su Python kalbos paprastumu.
+Šiam darbui atlikti pasirinkta Python programavimo kalba. Dėl Python paprastumo ir duomenų analizės specialistų polinkio naudoti šią kalbą internete gausu straipsnių ir kitų išteklių būtent šiai kalbai. Python leidžia susifokusuoti į aukšto lygmens abstrakcijas, kas labai praverčia kompiuterinėje regoje analizuojant ir darant operacijas su paveikslėliais, vaizdo medžiaga ir panašiai. Be to, kadangi Python yra interpretuojama programavimo kalba – jos nereikia kompiliuoti – atsiranda galimybė programuoti interaktyviai, t.y. greitai išgauti rezultatus iš įvairių skaičiavimų nevykdant iš naujo jau parašytos programos. 
+Kompiuterinės regos algoritmų įgyvendinimui nagrinėtos dvi bibliotekos: SimpleCV [1] ir OpenCV [2]. OpenCV – plačiai naudojama kompiuterinės regos užduotims spręsti skirta biblioteka, kuri yra nemokama. OpenCV parašyta C++ kalba, tačiau galima naudoti OpenCV su  Python apvalku ant C++ rašyto pagrindo. Taip pasiekiamas artimas C++ efektyvumas kartu su Python kalbos paprastumu.
 SimpleCV – panaši biblioteka į OpenCV, tačiau dar labiau abstrahuota, fokusas į naudojamo paprastumą, prieinamumą pradedantiesiems. Dėl medžiagos gausos ir didesnių galimybių sukurti efektyvų algoritmą nuspręsta naudoti OpenCV.
 \subsection{Vaizdo kamera}
-Varžybų metu filmuotoje medžiagoje objektai yra per smulkūs, kad būtų galima lengvai juos atskirti, apšvietimas prastas, kameros pozicija bei spalvos nepalankios ir t.t. Tad naudojama vaizdo medžiaga – nufilmuota ad hoc šiam darbui. Vaizdo medžiagai išgauti naudojama Xiaomi Redmi 5 Plus kamera, gebanti filmuoti 1080p, 60 kadrų per sekundę greičiu. 
-\section{Kompiuterinės regos algoritmai}
-\subsection{Objektų išskyrimas}
-Pirmiausia reikia apibrėžti, kaip vaizde atskirti vieną objektą nuo kito. Šiame darbe analizuojami svarbiausi objektai yra trys: kamuolys, žaidėjo rankos ir kojos. Tad programą galima išskirti į dvi dalis: pirmoji – naudojantis kompiuterinės regos algoritmais išgauti šiuos tris objektus ir sąveikas tarp jų, ir antroji – su gauta informacija atlikti žingsnius, aprašytus taisyklės pažeidimo algoritme. 
+Varžybų metu filmuotoje medžiagoje objektai yra per smulkūs, kad būtų galima lengvai juos atskirti, apšvietimas prastas, kameros pozicija bei spalvos nepalankios ir t.t. Tad naudojama vaizdo medžiaga – nufilmuota specialiai šiam darbui. Vaizdo medžiagai išgauti naudojama Xiaomi Redmi 5 Plus kamera, gebanti filmuoti 1080p, 60 kadrų per sekundę greičiu. 
+\section{Pirminis vaizdo apdorojimas}
+\subsection{Kompiuterinės regos algoritmai dominančių regionų išskyrimui}
+Pirmiausia vaizdas yra apdorojamas, siekiant išgauti objektus, kuriems vėliau bus pritaikomas algoritmas. Šiame darbe analizuojami svarbiausi objektai yra trys: kamuolys, žaidėjo rankos ir kojos. Tad programą galima išskirti į dvi dalis: pirmoji – naudojantis kompiuterinės regos algoritmais išgauti šiuos tris objektus ir sąveikas tarp jų, ir antroji – su gauta informacija atlikti žingsnius, aprašytus taisyklės pažeidimo algoritme. 
 Galima pamanyti, jog užtenka atrasti apvalų objektą ir teigti, jog tai – kamuolys, tačiau reikia atsižvelgti į tai, kad: 
 \begin{enumerate}
 \item Negalima garantuoti, kad kamuolys yra vienintelis apvalus objektas kadre. Pavyzdžiui, į kadrą gali patekti žaidėjo galva, arba pėda gali būti pastatyta taip, jog algoritmas ją irgi palaikys apvaliu objektu. 
@@ -72,17 +72,67 @@ Galima pamanyti, jog užtenka atrasti apvalų objektą ir teigti, jog tai – ka
 \subsection{Segmentavimas}
 Aukščiau išvardintų problemų sprendimui pasirinktas segmentavimo pagal spalvą metodas. Segmentavimas – procesas, kai vaizdas yra suskirstomas į nesikertančius regionus \cite{ImageSegmTech}. Tad segmentuojant pagal spalvą išskiriamas regionas, atitinkantis kamuolio vietą kadre, su prielaida, kad kamuolys bus kitokios, iš anksto apibrėžtos spalvos, negu bet kas kitas kadre. Šitaip programa galės nesunkiai išskirti kamuolį kaip atskirą objektą. 
 Jei kamuolio spalva nėra pakankamai ryški ir išsiskirianti iš fono, minėtu metodu atpažinti kamuolį darosi sunku, todėl kamuolio spalva turi būti kiek galima sodresnė. Taip pat naudojamas HSV modelis, kuris padeda dalinai išspręsti šią problemą \cite{StaloTenisas}: pasinaudojus HSV modeliu, atpažinti kamuolį darosi lengviau, net jei kinta apšvietimas, kadangi spalva išlieka ta pati, keičiasi tik sodrumas kartu su šviesumu.
-Taisyklės pažeidimo algoritmui reikia žinoti, kada kamuolys yra rankoje. Tačiau vykdant spalvos segmentavimą išskirti tik ranką yra beveik neįmanoma, jei rankos spalva sutampa su kitų elementų, esančių kadre, spalva – pavyzdžiui, žaidėjo odos. Tokiu atveju, išskirti ranką kaip objektą yra keletas būdų – pavyzdžiui, Haar kaskadų metodas, paremtas kompiuterio mokymo principais: su pozityviais paveikslėliais (šiuo atveju tai būtų paveikslėlis, kuriame pavaizduota ranka) ir negatyviais (tai paveikslėliai, kurie nėra ranka) sukuriama atpažinimo formulė. Tačiau toks rankų atpažinimo metodas gana sudėtingas ir lėtas, todėl nuspręsta imtis kitos išeities – užsidėti pirštinę, kurios spalva būtų unikali visame kadre. Šiuo atveju spalvų segmentavimu bus galima išskirti ranką.
+Taisyklės pažeidimo algoritmui reikia žinoti, kada kamuolys yra rankoje. Tačiau vykdant spalvos segmentavimą išskirti tik ranką yra beveik neįmanoma, jei rankos spalva sutampa su kitų elementų, esančių kadre, spalva – pavyzdžiui, žaidėjo odos. Tokiu atveju, išskirti ranką kaip objektą yra keletas būdų – pavyzdžiui, Haar kaskadų metodas, paremtas kompiuterio mokymo principais: su pozityviais paveikslėliais (šiuo atveju tai būtų paveikslėlis, kuriame pavaizduota ranka) ir negatyviais (tai paveikslėliai, kurie nėra ranka) sukuriama atpažinimo formulė. \cite{HaarCascades}  Tačiau toks rankų atpažinimo metodas gana sudėtingas ir lėtas, todėl nuspręsta imtis kitos išeities – užsidėti pirštinę, kurios spalva būtų unikali visame kadre. Šiuo atveju spalvų segmentavimu bus galima išskirti ranką.
 \subsection{Morfologinės transformacijos}
 Po segmentavimo išskirtas objektas gali turėti triukšmo (t.y. nereikalingų dėmių, smulkių objektų fone). Tam, kad jų nebeliktų, pritaikomos morfologinės transformacijos: erozija ir plėstis. Erozija – procedūra vykdoma ant matricos (paveikslėlio reprezentacijos). Turėdami dvi matricas -  matricą A ir matricą B (vadinamą struktūriniu elementu) – galime praeiti su struktūriniu elementu pro kiekvieną matricos A reikšmę, atliekant sankirtą su visom struktūrinio elemento reikšmėm ir tomis, kurias B “apglėbia” A matricoje. Formaliai tai užsirašo šitaip \cite{ImageAnalysisMorph}:
 
-\[ A \ominus B = \bigcap_ {b \in B } (A)_{-b} \]
+\begin{equation}\label{eq:erozija}
+A \ominus B = \bigcap_ {b \in B } (A)_{-b} 
+\end{equation}
 
 Po erozijos paveikslėlyje ne tik sumažėja triukšmo, bet ir sumažėja pavaizduoto objekto plotas. Todėl panaudojama plėstis, kuri gali būti naudojama kaip priešinga operacija erozijai: po plėsties objekto plotas išdidinamas. Kaip ir erozijos atveju, naudojamas struktūrinis elementas, tik šį kartą vietoje sankirtos naudojama sąjunga \cite{ImageAnalysisMorph}
 
-\[ A \oplus B = \bigcup_ {b \in B } (A)_{b} \]
+\begin{equation}\label{eq:plestis}
+A \oplus B = \bigcup_ {b \in B } (A)_{b} 
+\end{equation}
 
 Svarbu plėstį atlikti po erozijos, priešingu atveju plėstis išryškins triukšmą (mažus objektus padarys didesniais), o erozija juos vėl apmažins – galutiniame variante gaunama kažkas panašaus į originalą. Pirma vykdant eroziją, o tik vėliau plėstį užtikriname, kad bus panaikintas triukšmas, o svarbūs objektai išlaikys savo plotą. 
+
+\subsection{Kontūrų radimas ir užpildymas}
+Išgavus regionus, kurie atitinka taisyklės pažeidimo atpažinimo algoritmui reikalingus objektus - ranką, kamuolį bei pėdą - vykdomas sekantis žingsnis: kontūrų radimas bei jų užpildymas. Kadangi po segmentacijos regionai nepersikloja vienas su kitu, negalima gauti jokios informacijos apie tai, ar žaidėjas liečia rankomis kamuolį ir kojomis žemę. Šiai problemai išspręsti randami kamuolio kontūrai naudojantis mažiausio apskritimo radimo algoritmu. OpenCV apskritimo kontūrui atrasti naudoja Emo Welzl algoritmą, kuris nepriklausomai nuo regiono, apskritimo kontūrą randa tiesiniu laiku \cite{smallestenclosing}. Kontūrai vėliau užpildomi, rezultate gaunant visą plotą, kuriame yra kamuolys, net jei jis ir uždengtas kitų objektų.
+
+\section{Objektų ir jų padėties atpažinimo algoritmas}
+Čia aprašomas objektų padėties atpažinimas bei apibendrintas algoritmas, kaip iš vaizdo gaunama reikiama informacija apie tai, ar 
+\begin{enumerate}
+	\item kamuolys rankose, 
+	\item atliktas žingsnis.
+\end{enumerate}
+\subsection{Rankos, kamuolio, kojos bei žemės atpažinimas ir tarpusavio sąryšiai}
+Atlikus segmentavimą, morfologines transformacijas bei kontūrų užpildymą, turima pakankamai informacijos teiginių apie objektų tarpusavio sąryšius konstravimui.
+OpenCV visus paveikslėlius galima reprezentuoti loginėmis matricomis. Tad ranka, kamuolys, kojos bei žemė saugomi kaip loginės matricos, kas įgalina efektyviai atlikti logines operacijas.
+\subsection{Algoritmas}
+Aukščiau aprašytas procedūras galima apibendrintai aprašyti algoritmu, kuriuo vadovaujasi ir sukurta programinė įranga.
+\begin{enumerate}
+	\item Vaizdo medžiaga išskiriama į kadrus . 
+	\item Kadrui vykdoma segmentacija pagal iš anksto numatytas spalvas, gaunami regionai. 
+	\item Regionams vykdomos morfologinės operacijos.
+	\item Regionams vykdomos kontūro radimo operacijos.
+	\item Kontūrai užpildomi.
+	\item Persidengiantys regionai konvertuojami į logines matricas.
+	\item Su matricomis atliekamos Būlio disjunkcija.
+	  \begin{enumerate}
+		\item Disjunkciją atlikus su kamuolio ir rankos matricomis, gaunama nauja matrica, kurioje teigiama reikšmė (1) reiškia tai, jog šioje vietoje ranka ir kamuolys persidengia.
+		\item Jeigu matricoje teigiamų reikšmių lyginant su visomis reikšmėmis yra daugiau, negu numatytas santykis, kamuolys yra rankoje.
+		\item Jeigu matricoje teigiamų reikšmių lyginant su visomis reikšmėmis yra mažiau, negu numatytas santykis, kamuolys yra ore.
+	\end{enumerate}
+	
+\end{enumerate}
+
+\section{Taisyklės pažeidimo atpažinimas}
+Šiame darbe nagrinėjama taisyklė yra oficialiame NBA puslapyje aprašytos 10 taisyklės 14 skyriuje. Taisyklė sako, jog gavęs kamuolį, žaidėjas gali padaryti daugiausiai du žingsnius prieš kamuolį išmesdamas ar atiduodamas kitam žaidėjui. 
+\subsection{Algoritmas}
+	Taisyklė laikoma pažeista, jeigu tenkinamos šios sąlygos:
+	\begin{enumerate}
+	\item Kamuolys yra rankose
+		\begin{enumerate}
+			\item Užfiksuojamas pirmasis pėdos kontaktas su žeme.
+			\item Užfiksuojamas antrasis pėdos kontaktas su žeme.
+			\item Užfiksuojamas trečiasis pėdos kontaktas su žeme.
+		\end{enumerate}
+\end{enumerate}
+
+\section{Sistemos išbandymas su filmuota medžiaga}
+Dėl gan prastos kameros ir neidealaus apšvietimo, kamuolio, pirštinės ir batų spalvos buvo pasirinktos kiek galima ryškesnės ir būtinai skirtingos. Taip pat labai svarbus ryškus kontrastas tarp žemės ir fono, bei kameros padėtis. Filmuojant iš per aukštai pasidaro nebeįmanoma pasakyti, ar pėda kontaktuoja su paviršiumi, ar ne. 
 
 \sectionnonum{Rezultatai ir išvados}
 Rezultatų ir išvadų dalyje turi būti aiškiai išdėstomi pagrindiniai darbo
@@ -97,40 +147,5 @@ rekomendacijos, akcentuojamos naujovės).
 % Aprašai pateikiami netransliteruoti. Šaltinių sąraše negali būti tokių
 % šaltinių, kurie nebuvo paminėti tekste.
 
-% \sectionnonum{Sąvokų apibrėžimai}
-\sectionnonum{Santrumpos}
-Sąvokų apibrėžimai ir santrumpų sąrašas sudaromas tada, kai darbo tekste
-vartojami specialūs paaiškinimo reikalaujantys terminai ir rečiau sutinkamos
-santrumpos.
-
-\appendix  % Priedai
-% Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
-% parengta, medžiaga. Savarankiški priedai gali būti pateikiami ir
-% kompaktiniame diske. Priedai taip pat numeruojami ir vadinami. Darbo tekstas
-% su priedais susiejamas nuorodomis.
-
-\section{Niauroninio tinklo struktūra}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{img/MLP}
-    \caption{Paveikslėlio pavyzdys}
-    \label{img:mlp}
-\end{figure}
-
-
-\section{Eksperimentinio palyginimo rezultatai}
-% tablesgenerator.com - converts calculators (e.g. excel) tables to LaTeX
-\begin{table}[H]\footnotesize
-  \centering
-  \caption{Lentelės pavyzdys}
-  {\begin{tabular}{|l|c|c|} \hline
-    Algoritmas & $\bar{x}$ & $\sigma^{2}$ \\
-    \hline
-    Algoritmas A  & 1.6335    & 0.5584       \\
-    Algoritmas B  & 1.7395    & 0.5647       \\
-    \hline
-  \end{tabular}}
-  \label{tab:table example}
-\end{table}
 
 \end{document}
