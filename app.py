@@ -16,6 +16,9 @@ def erode(image, iterations):
 def dilate(image, iterations):
 	return cv2.dilate(image, np.ones((3,3), np.uint8), iterations=iterations)
 
+def chooseLargestContours(contours):
+	return [contour for contour in contours if contour.size == max([contour.size for contour in contours])][0]
+
 def printImg(image):
 	cv2.namedWindow('image',cv2.WINDOW_NORMAL)
 	cv2.resizeWindow('image', 600,600)
@@ -59,7 +62,8 @@ ballContours, h = cv2.findContours(maskForBall, cv2.RETR_TREE, cv2.CHAIN_APPROX_
 handContours, h = cv2.findContours(maskForHand, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 shoeContours, h = cv2.findContours(maskForShoes, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-(x,y),radius = cv2.minEnclosingCircle(ballContours[0])
+
+(x,y),radius = cv2.minEnclosingCircle(chooseLargestContours(ballContours))
 center = (int(x),int(y))
 cv2.circle(maskForBall,center,int(radius),(255,0,0), -1)
 
@@ -68,9 +72,10 @@ cv2.fillPoly(maskForHand, color = (255, 0, 0), pts = handContours )
 
 handAndBall = cv2.bitwise_and(maskForBall,maskForBall,mask=maskForHand)
 handAndBall = np.array(handAndBall)
-printImg(handAndBall)
+
 
 pixelPctg = handAndBall[np.where(handAndBall >= 1)].size / handAndBall.size * 100
+print(pixelPctg)
 
 if pixelPctg > 0.1: 
     print("rankoje")
