@@ -68,8 +68,17 @@ def algorithm(img):
 	ballContours, h = cv2.findContours(maskForBall, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 	handContours, h = cv2.findContours(maskForHand, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 	shoeContours, h = cv2.findContours(maskForShoes, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
 	
+	(handX,handY,handW,handH) = cv2.boundingRect(handContours[0])
+	ballAboveHands = False;
+
+	if (len(ballContours) > 0):
+		(ballX,ballY,ballW,ballH) = cv2.boundingRect(ballContours[0])
+		handCenter = ((handX + handW)/2, (handY + handH)/2)
+		ballCenter = ((ballX + ballW)/2, (ballY + ballH)/2)
+		if ballCenter[1] > handCenter[1]:
+			ballAboveHands = True;
+
 	ballContour = chooseLargestContours(ballContours)
 	if ballContour is not None:
 		(x,y),radius = cv2.minEnclosingCircle(ballContour)
@@ -82,26 +91,31 @@ def algorithm(img):
 		handAndBall = cv2.bitwise_and(maskForBall,maskForBall,mask=maskForHand)
 		handAndBall = np.array(handAndBall)
 
-
 		pixelPctg = handAndBall[np.where(handAndBall >= 1)].size / handAndBall.size * 100
 		print(pixelPctg)
 
-		if pixelPctg > 0.06: 
-		    return "rankose, " + str(pixelPctg) 
-		else: 
-		    return "ne rankose, " + str(pixelPctg) 
+		if ballAboveHands:
+		    txt = "Kamuolys virs ranku"
+		else:
+			if pixelPctg > 0.001: 
+			    txt = "rankose, " + str(pixelPctg) 
+			else: 
+			    txt = "ne rankose, " + str(pixelPctg) 
 	else:
-		 return "kamuolio nera"
+		 txt = "kamuolys nerastas"
 
+	font = cv2.FONT_HERSHEY_SIMPLEX #Creates a font
+	x = 1000 #position of text
+	y = 200 #position of text
+	cv2.putText(img, txt, (x,y),font, 2, (0,255,0), 3) #Draw the text
+	return img;
+	
 vid = cv2.VideoCapture('kursiniuivid(0).mp4')
 
 while(True):
     # Capture frame-by-frame
 	ret, frame = vid.read()
-	font = cv2.FONT_HERSHEY_SIMPLEX #Creates a font
-	x = 1000 #position of text
-	y = 200 #position of text
-	cv2.putText(frame, algorithm(frame), (x,y),font, 2, (0,255,0), 3) #Draw the text
+	frame = algorithm(frame)
 
     # Display the resulting frame
 	printImg(frame)
