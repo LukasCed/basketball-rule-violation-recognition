@@ -47,3 +47,10 @@ def put_text(image, text, coord, color = (0,255,0)):
 	x = coord[0]
 	y = coord[1]
 	cv2.putText(image, text, (x,y), font, 2, color, 3) #Draw the text
+
+def create_background(image, coordStart, coordEnd):
+	rectangle_bgr = (0, 0, 0)
+	# make the coords of the box with a small padding of two pixels
+	box_coords = ((coordStart[0], coordStart[1]), (coordEnd[0], coordEnd[1]))
+	cv2.rectangle(image, box_coords[0], box_coords[1], rectangle_bgr, cv2.FILLED)
+
