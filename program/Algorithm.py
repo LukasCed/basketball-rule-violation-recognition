@@ -2,10 +2,10 @@ from ImageProcessingUtils import *
 import cv2
 import numpy as np
 
-lower_green = np.array([77, 60, 50])
-upper_green = np.array([83, 255, 200])
-lower_yellow = np.array([19,130,130])
-upper_yellow = np.array([25,255,255])
+lower_green = np.array([74, 80, 42])
+upper_green = np.array([84, 255, 200])
+lower_yellow = np.array([17,140,130])
+upper_yellow = np.array([28,255,255])
 lower_red = np.array([173,100,100])
 upper_red = np.array([180,250,255])
 
@@ -64,17 +64,20 @@ class Algorithm:
 
 		this.compute_step(shoe_contours)
 		this.compute_turnover()
-			
+		
+		if len(hand_contours) < 1:
+			return img;	
+
 		(handX,handY,handW,handH) = cv2.boundingRect(hand_contours[0])
 		ball_above_hands = False;
 
 		#improve later - ranka virs kamuolio
-		if (len(ball_contours) > 0):
-			(ballX,ballY,ballW,ballH) = cv2.boundingRect(ball_contours[0])
-			handCenter = ((handX + handW)/2, (handY + handH)/2)
-			ballCenter = ((ballX + ballW)/2, (ballY + ballH)/2)
-			if ballCenter[1] > handCenter[1]:
-				ball_above_hands = True;
+		# if (len(ball_contours) > 0):
+		#	(ballX,ballY,ballW,ballH) = cv2.boundingRect(ball_contours[0])
+		#	handCenter = ((handX + handW)/2, (handY + handH)/2)
+		#	ballCenter = ((ballX + ballW)/2, (ballY + ballH)/2)
+		#	if ballCenter[1] > handCenter[1]:
+		#		ball_above_hands = True;
 		#improve later
 
 		ball_contour = choose_largest_contours(ball_contours)
@@ -90,18 +93,14 @@ class Algorithm:
 			hand_and_ball = np.array(hand_and_ball)
 
 			pixel_pctg = hand_and_ball[np.where(hand_and_ball >= 1)].size / hand_and_ball.size * 100
-			print(pixel_pctg)
 			txt2 = "Zinsgniai: " + str(this.step_count)
 
-			if ball_above_hands:
-			    txt = "Kamuolys virs ranku"
-			else:
-				if pixel_pctg > 0.001: 
-				    txt = "rankose, " + str(pixel_pctg) 
-				    this.ball_in_hands_counter = 3
-				else: 
-				    this.ball_in_hands_counter = max(this.ball_in_hands_counter - 1, 0)
-				    if this.ball_in_hands_counter == 0: txt = "ne rankose, " + str(pixel_pctg) 
+			if pixel_pctg > 0.001: 
+			    txt = "rankose, " + str(pixel_pctg) 
+			    this.ball_in_hands_counter = 3
+			else: 
+			    this.ball_in_hands_counter = max(this.ball_in_hands_counter - 1, 0)
+			    if this.ball_in_hands_counter == 0: txt = "ne rankose, " + str(pixel_pctg) 
 
 		else:
 			 txt = "kamuolys nerastas"

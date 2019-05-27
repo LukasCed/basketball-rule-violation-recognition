@@ -6,10 +6,11 @@ from PIL import Image
 from Algorithm import Algorithm
 from ImageProcessingUtils import print_img
 	
-vid = cv2.VideoCapture('../kursiniuivid(0).mp4')
+
+vid = cv2.VideoCapture('vidai/normal.mp4')
 algorithm = Algorithm()
 
-while(True):
+while(!algorithm.turnover):
     # Capture frame-by-frame
 	ret, frame = vid.read()
 	frame = algorithm.execute(frame)
