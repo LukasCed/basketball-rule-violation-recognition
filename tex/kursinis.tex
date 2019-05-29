@@ -57,7 +57,7 @@ Darbe bus išanalizuoti probleminiai faktoriai, sukeliantys trukdžių vaizdo at
 \section{Naudoti įrankiai ir metodai}
 Šiam darbui atlikti pasirinkta Python programavimo kalba. Dėl Python paprastumo ir duomenų analizės specialistų polinkio naudoti šią kalbą internete gausu straipsnių ir kitų išteklių būtent šiai kalbai. Python leidžia susifokusuoti į aukšto lygmens abstrakcijas, kas labai praverčia kompiuterinėje regoje analizuojant ir darant operacijas su paveikslėliais, vaizdo medžiaga ir panašiai. Be to, kadangi Python yra interpretuojama programavimo kalba – jos nereikia kompiliuoti – atsiranda galimybė programuoti interaktyviai, t.y. greitai išgauti rezultatus iš įvairių skaičiavimų nevykdant iš naujo jau parašytos programos. 
 
-Kompiuterinės regos algoritmų įgyvendinimui nagrinėtos dvi bibliotekos: SimpleCV [1] ir OpenCV [2]. OpenCV – plačiai naudojama kompiuterinės regos užduotims spręsti skirta biblioteka, kuri yra nemokama. OpenCV parašyta C++ kalba, tačiau galima naudoti OpenCV su  Python apvalku ant C++ rašyto pagrindo. Taip pasiekiamas artimas C++ efektyvumas kartu su Python kalbos paprastumu.
+Kompiuterinės regos algoritmų įgyvendinimui nagrinėtos dvi bibliotekos: SimpleCV \cite{SimpleCV} ir OpenCV \cite{OpenCV}. OpenCV – plačiai naudojama kompiuterinės regos užduotims spręsti skirta biblioteka, kuri yra nemokama. OpenCV parašyta C++ kalba, tačiau galima naudoti OpenCV su  Python apvalku ant C++ rašyto pagrindo. Taip pasiekiamas artimas C++ efektyvumas kartu su Python kalbos paprastumu.
 SimpleCV – panaši biblioteka į OpenCV, tačiau dar labiau abstrahuota, fokusas į naudojamo paprastumą, prieinamumą pradedantiesiems. Dėl medžiagos gausos ir didesnių galimybių sukurti efektyvų algoritmą nuspręsta naudoti OpenCV.
 
 Vaizdo medžiagai išgauti naudojama Xiaomi Redmi 5 Plus kamera, gebanti filmuoti 1080p, 60 kadrų per sekundę greičiu. 
@@ -144,7 +144,10 @@ Aukščiau aprašytas procedūras galima apibendrintai aprašyti algoritmu, kuri
 Disjunkciją atlikus su kamuolio ir rankos matricomis, gaunama nauja matrica, kurioje teigiama reikšmė (1) reiškia tai, jog šioje vietoje ranka ir kamuolys persidengia. Jeigu matricoje teigiamų reikšmių lyginant su visomis reikšmėmis yra daugiau, negu numatytas santykis, kamuolys yra rankoje. Kamuolio buvimo rankoje būsena yra saugoma atminty sulyg kiekvienu kadru.
 
 
-Žingsnio išgavimo technika šiek tiek skiriasi. Paeksperimentavus su filmuota medžiaga nuspręsta, jog žemės segmentavimas nėra efektyvus: pilkšva aikštelių spalva atsikartoja daug kur - drabužiuose, fone. Vietoje to suskaičiuojamas pėdų kontūrų kiekis. Jeigu pėdos toli viena nuo kitos - kontūrų atitinkamai bus rasta du. Kita vertus, atliekant žingsnio judesį, kojos visada persidengs viena su kita. Todėl daroma prielaida, jog kiekvieno žingsnio eigoje pėdos taip pat persidengs. Po segmentavimo ir diliacijos, persidengiančių pėdų regionai sudaro vientisą aibę, kuri savo ruožtu turi vienintelį kontūrą. Jei vaizdo apdorojimo eigoje aptinkama, jog pėdų segmentų skaičius iš dviejų tapo vienu, programa nuspręs, jog buvo padarytas žingsnis. 
+Žingsnio išgavimo technika šiek tiek skiriasi. Paeksperimentavus su filmuota medžiaga nuspręsta, jog žemės segmentavimas nėra efektyvus: pilkšva aikštelių spalva atsikartoja daug kur - drabužiuose, fone. Vietoje to suskaičiuojamas pėdų kontūrų kiekis. Jeigu pėdos toli viena nuo kitos - kontūrų atitinkamai bus rasta du. Kita vertus, atliekant žingsnio judesį, kojos (žiūrint iš šono) visada persidengs viena su kita. Todėl daroma prielaida, jog kiekvieno žingsnio eigoje pėdos taip pat persidengs.
+
+
+ Po segmentavimo ir diliacijos persidengiančių pėdų regionai sudaro vientisą aibę, kuri savo ruožtu turi vienintelį kontūrą - išskyrus atvejus, kai dėl prasto apšvietimo po segmentavimo pėdos regione atsiranda trūkių. Šie trūkiai gali sudaryti mažus regionus, nesiribojančius su kitais, kuriuo atveju randami daugiau nei du kontūrai. Tam, kad algoritmas nepraleistų žingsnio, kontūrai, kurių apimamas plotas mažesnis už tam tikrą reikšmę, yra ignoruojami. Jei vaizdo apdorojimo eigoje aptinkama, jog pėdų segmentų skaičius iš dviejų tapo vienu, nusprendžiama, jog buvo padarytas žingsnis. 
 
 \section{Taisyklės pažeidimo atpažinimas}
 Šiame darbe nagrinėjama taisyklė yra oficialiame NBA puslapyje aprašytos 10 taisyklės 14 skyriuje. Taisyklė sako, jog gavęs kamuolį, žaidėjas gali padaryti daugiausiai du žingsnius prieš kamuolį išmesdamas ar atiduodamas kitam žaidėjui. Veiksmų, ją pažeidžiančių, aibė yra didelė - ranką pakišant po kamuoliu (\textit{angl.} carrying), varymasis jau prieš tai suėmus kamuolį (\textit{angl.} double dribble), neteisėtas pėdos (\textit {angl.} pivot foot) pakėlimas ir t.t.. Darbe fokusuojamasi į tą veiksmų poaibį, kuriame žaidėjas žingsniuoja, rankose laikydamas kamuolį. 
@@ -154,7 +157,7 @@ Tad taisyklė laikoma pažeista, jeigu tenkinama ši sąlyga:  tuo metu, kol kam
 Tegu $t_S$- laiko momentas, žymintis žingsnio įvykį $S$. Intervalas $({t_R}_1,{ t_R}_2)$ nusako laiko intervalą, kai kamuolys buvo laikomas rankuose, $R_1$ - kamuolio suėmimas, $R_2$ - kamuolio paleidimas. Tuomet sąlygą, tenkinančią taisyklės pažeidimą, galima aprašyti taip: 
 
 \begin{equation}\label{eq:zingsniai}
-\exists {t_S}_1\land \exists {t_S}_2 ( {{t_S}_1,  {t_S}_2} \in	({t_R}_1, {t_R}_2) )
+\exists {t_S}_1\land \exists {t_S}_2 ( {{t_S}_1,  {t_S}_2} \in	({t_R}_1, {t_R}_2) ).
 \end{equation}
 
 Ši žingsnių atpažinimo metodika turi svarbų trūkumą - jei žingsniavimo procese kamuolys nors viename kadre išeina iš rankų, intervalas nutrūksta ir žingsniai pradedami skaičiuoti iš naujo. Turint omeny tai, jog rankos ir kamuolio sąlyčio taškų kiekis gali būti itin mažas (priklausomai nuo to, kaip laikomas yra kamuolys bei nuo to, kiek sėkminga buvo segmentacija),tikimybė, jog kamuolys nebus aptiktas rankose, net ir tada, kai jis ten yra, yra reikšminga. Nutrūkus laikymo rankose intervalui, atitinkamai mažėja ir visos $({t_R}_1,{ t_R}_2)$ aibės - tuomet sumažėja ir tikimybė, jog sąlyga \ref{eq:zingsniai} bus tenkinama, galimai padidėjant ir klaidingai neigiamų rezultatų skaičiui.
@@ -162,8 +165,10 @@ Tegu $t_S$- laiko momentas, žymintis žingsnio įvykį $S$. Intervalas $({t_R}_
 
 Siekiant išvengti tokių trukdžių, nuspręsta naudoti skaitiklio principą: saugomas dar vienas kintamasis - skaitiklis, kuris, išėjus kamuoliui iš rankų ribų, mažinamas, ir tik pasiekus reikšmę 0 laikoma, kad kamuolys nebėra rankose. Taip pasiekiamas laikymo rankose intervalo stabilumas - menki skaičiavimo trikdžiai nebesuskaido intervalo, ir jeigu kamuolys tikrai nebėra rankose - programa tą atpažins jau po kelių kadrų ir žingsnius pradės skaičiuoti iš naujo. Tiesa, didžiausia skaitiklio galima reikšmė turi būti pakankamai maža, kad žingsnis nebūtų užregistruojamas jau kamuoliui nebesant rankose. 
 
-\section{Atlikti bandymai}
-Su Xiaomi Redmi 5 Plus kamera skirtingais dienos laikais, iš skirtingų kampų buvo nufilmuoti 5 vaizdo įrašai, kurie vėliau suskarpyti į 5 sekundžių fragmentus. Kiekvienamame vaizdo įrašo fragmente žingsnių taisyklės pažeidimas arba įvyksta, arba ne. Atliekant sukurtos programos bandymus su nufilmuota vaizdo medžiaga pastebėtos kelios problemos: šešėlyje filmuota medžiaga yra netinkama, nes dėl prastos kameros kokybės sufilieja fonas ir kamuolys bei pirštinės - visų objektų prisotinimas (\textit{angl.} saturation) nukrypsta į pilką ir tuomet sunku atskirti skirtingo atspalvio spalvas (kita vertus, gerame apšvietime fonas nebuvo tokia didelė problema, nei tikėtasi - segmentacijos metu buvo puikiai susidorota su skirtumais tarp žalio kamuolio ir medžių). Lygiai taip pat spalvos atpažinimą pasunkina ir žaidėjo nuotolis nuo kameros - prisotinimas, kaip ir filmuojant šešėlyje, nukrypsta į pilką. 
+\section{Atlikti bandymai ir atvejų analizė}
+Šiame skyriuje aprašomas vaizdo medžiagos rinkimas, sukurtos programos išbandymas bei plačiau nagrinėjami atvejai, kuriuose algoritmas neteisingai suklasifikavo duotąją vaizdo medžiagą. 
+\subsection{Atlikti bandymai}
+Su Xiaomi Redmi 5 Plus kamera skirtingais dienos laikais, iš skirtingų kampų buvo nufilmuoti 5 vaizdo įrašai, kurie vėliau suskarpyti į 5 sekundžių fragmentus. Kiekvienamame vaizdo įrašo fragmente žingsnių taisyklės pažeidimas arba įvyksta, arba ne. Atliekant sukurtos programos bandymus su nufilmuota vaizdo medžiaga pastebėtos kelios problemos: šešėlyje filmuota medžiaga yra netinkama, nes dėl prastos kameros kokybės sufilieja fonas ir kamuolys bei pirštinės - visų objektų sodrumas (\textit{angl.} saturation) nukrypsta į pilką ir tuomet sunku atskirti skirtingo atspalvio spalvas (kita vertus, gerame apšvietime fonas nebuvo tokia didelė problema, nei tikėtasi - segmentacijos metu buvo puikiai susidorota su skirtumais tarp žalio kamuolio ir medžių). Lygiai taip pat spalvos atpažinimą pasunkina ir žaidėjo nuotolis nuo kameros - prisotinimas, kaip ir filmuojant šešėlyje, nukrypsta į pilką. 
 
 
 Taip pat iškilo keletas pasirinktų metodikų trūkumų: programa turi sunkumų atpažįstant žingsniavimą, jei žaidėjas filmuotas iš priekio - taip yra dėl pasirinkto aukščiau aprašyto žingsnių atpažinimo būdo, kai žingsnis atpažįstamas tik tada, kai pėdos (sportbačiai) persidengia viena su kita. Atlikus kokį nors sudėtingesnį judesį - tarkim, pasisukimą - programa taip pat linkusi neteisingai tai atpažinti kaip žingsnių taisyklės pažeidimą, kadangi kamuolys užsilieka rankose, o pėdos persidengia bent kelis kartus. 
@@ -174,12 +179,33 @@ Siekiant pagerinti problemas su spalvų neatpažinimu buvo stengiamasi kiek įma
 
 Programai buvo pateikti 22 vaizdo įrašai, iš jų - pusėje įvyksta žingsnių taisyklės pažeidimas, pusėje - ne. Teisingai buvo atrasti 8 taisyklių pažeidimai iš 11 (72.7\% tikslumas) bei 10-yje įrašų iš 11 taisyklės pažeidimo nerasta (90.9\% tikslumas). 2 pažeidimai liko nepastebėti, ir vienas įrašas klaidingai atpažintas kaip turintis pažeidimą. 
 
+
+\subsection{Klaidingai suklasifikuotų atvejų analizė}
+
+\begin{table}[H]\footnotesize
+	\centering
+	\caption{Klaidingai suklasifikuoti atvejai}
+	\begin{tabular}{|p{2cm}|p{3cm}|p{2cm}|p{2cm}|p{6cm}|}  \hline
+		\textbf{Atvejo nr.} & \textbf{Atvejo aprašas} & \textbf{Gautas rezultatas} &     \textbf{Tikėtasis rezultatas} & \textbf{Klaidos paaiškinimas} \\
+		
+		\hline
+		Pirmasis atvejis    & Žaidėjas mušinėja kamuolį stovėdamas, nežymiai kilnoja pėdas, jos arti viena kitos.                & Taisyklė pažeista   & Taisyklė nepažeista & Vaizdo atpažinimo algoritmo trūkumas. Pėdos arti viena kitos - segmentacija išskyrė du beveik besiliečiančius regionus, ko pasekoje rastų kontūrų skaičius periodiškai kas kelis kadrus varijavo tarp vieno ir dviejų. Algoritmas neteisingai tai atpažino kaip žingsnius.                                                                                                                                                                                                                      \\ \hline
+		Antrasis atvejis    & Žaidėjas sumuša kamuolį ir jį nusineša už kadro.                                                   & Taisyklė nepažeista & Taisyklė pažeista   & Vaizdo atpažinimo algoritmo ir filmuotos medžiagos trūkumai. Taisyklės pažeidimas neaptiktas dėl dviejų priežasčių. Pirmoji - dėl apšvietimo batų segmentavimas sukūrė atskirtus vienas nuo kito smulkius regionus. Tie regionai tuomet buvo interpretuojami kaip atskiri smulkūs kontūrai, ko pasekoje algoritmas neatpažino padaryto žingsnio. Antroji priežastis - žaidėjo ranka išėjo iš kadro greičiau, nei programa užfiksavo padarytą žingsnį. \\ \hline
+		Trečiasis atvejis   & Žaidėjas sumuša kamuolį, paeina kelis žingsnius su kamuoliu rankose, ir tęsia kamuolio mušinėjimą. & Taisyklė nepažeista & Taisyklė pažeista   & Vaizdo atpažinimo algoritmo trūkumas. Darant žingsnį, po segmentacijos kairysis žaidėjo bato aptikta tik maža dalis, nes žaidėjas buvo ganėtinai toli ir šešėlyje, tad batų regionai tinkamai nepersiklojo.                                                                                                                                                                                                                                                                                     \\ \hline
+		Ketvirtasis atvejis & Žaidėjas įeina į kadrą nešdamasis kamuolį užantyje.                                                & Taisyklė nepažeista & Taisyklė pažeista   & Nei kamuolio, nei jo laikančios rankos nesimatė, tad apie jų poziciją programa nesugebėjo gauti informacijos.                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+	\end{tabular}
+	\label{tab:table example}
+\end{table}
+
+Kaip matyti, antruoju ir trečiuoju atveju neteisingą atpažinimą lėmė prastas apšvietimas ir vaizdo kokybė. Segmentacija nesugeba susidoroti su stipriai kintančiu šviesos spektru. Pirmasis atvejis - loginė algoritmo klaida, kadangi nežymūs kojų judesiai buvo palaikyti kaip žingsniai. Ketvirtasis atvejis - per sudėtingas tinkamai atpažinti šiame darbe aprašytomis metodikomis, kadangi remiamasi prielaida, jog kamuolys ir ranka visada matomi.
+
+Panagrinėjus antrąjį atvejį, problemą nuspręsta spręsti euristiškai: vykdant žingsnio atpažinimo algoritmą atmesti kontūrus, kurių apimamas plotas yra mažesnis už tam tikrą slenkstinę reikšmę. 
  
 \sectionnonum{Rezultatai ir išvados}
-Šiame darbe buvo atlikta kompiuterinės regos metodų analizė, sukurtas kamuolio laikymo rankose ir žingsniavimo atpažinimo algoritmas bei žingsnių taisyklės pažeidimo algoritmas. Taisyklės pažeidimą algoritmas atpažino 72.7\% tikslumu, o kamuolio varymąsi nepažeidžiančiu taisyklės atpažino 90.9\% tikslumu. 
+Šiame darbe buvo atlikta kompiuterinės regos metodų analizė, sukurtas kamuolio laikymo rankose ir žingsniavimo atpažinimo algoritmas bei žingsnių taisyklės pažeidimo algoritmas.
+Vaizdo medžiagą, kurioje pažeista taisyklė, programa suklasifikavo 72.7\% tikslumu. Vaizdo medžiagą, kurioje nėra pažeista taisyklė, programa suklasifikavo 90.9\% tikslumu.Didžiausias taisyklės atpažinimo klaidų šaltinis - prastas apšvietimas, dėl ko stipriai kinta objektų atspalviai, šviesumas ir sodrumas, ko pasekoje segmentacija pagal spalvą nesugeba atpažinti objektų, kurių atspalvio, šviesumo ir sodrumo intervalai yra nustatyti iš anksto, nekintantys. 
 
-Objektų atpažinimas pagal spalvą yra labai jautrus išoriniems faktoriams - apšvietimui, įrašo kokybei, fonui, tad norint programą panaudoti realiomis sąlygomis būtina patyrinėti kitus metodus. Taip pat reikia atrasti žingsnio atpažinimo metodiką, kurios rezultatai nepriklausytų nuo filmuojamo kampo. 
-
+Kadangi objektų atpažinimas pagal spalvą yra labai jautrus išoriniems faktoriams, būtina patyrinėti kitus metodus.
 \printbibliography[heading=bibintoc]  % Šaltinių sąraše nurodoma panaudota
 % literatūra, kitokie šaltiniai. Abėcėlės tvarka išdėstomi darbe panaudotų
 % (cituotų, perfrazuotų ar bent paminėtų) mokslo leidinių, kitokių publikacijų
