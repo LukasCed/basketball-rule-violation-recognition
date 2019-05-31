@@ -1,0 +1,38 @@
+﻿
+Per toli obj - prarandmas ryskumas (hue) citation needed
+Gal net i prieki? Toks algoritmas neras i prieki singsniu
+Padaryti su kamuoliu virs ranku, paaiskinti kodel, suprogr
+Color segmentation sucks
+
+Steps:
+Triple stepback
+Paemi dviem rankom padarai zingsni ir tpliau musi
+Pasoki su viena koja
+Pasoki su dviem
+Non-steps:
+Ilgai rankoj laikai ir pararai kelis zingsnius
+
+Variables
+Greitis begimo 
+Kampas
+Background
+Crossoveriai
+Kilnojimas aukstyn
+Spin
+I viena psue i kita
+
+Paskaityti r. Results. Gal pasakys kiek video reik padaryt, kaip analuze
+ pamineti kad continuous and end – gg 
+
+sujungti bandymu ir taisykles skyriu . Bandymai – situacijos. 
+
+* krc esamos bedos:
+1) tarkim jeigu padarau kad jeigu kol rankose ir padaro du zingsnius - zingsniai. problema nes 1) false positive: gali tiesiog kamuolys ilgai drible but o kojos du kartus greit prashuflint. arba layupa darant tai. false negative - jeigu tarkim as pakisu ranka po kamuoliu. istikro galiu tik du zingsnius padaryt bet programai px jeigu as paleisiu ir vel toliau driblinsiu
+2) del sukryziavimo - nu ngrj nes gali maskatuot ir perlryziuot bet nepadaryt zingsznio (false positive). taip pat false negative jeigu pasoks i prieki tarkim ir programa neras zingnio bet pagal nba ras
+
+paminėti kad zjbs kamera. 
+Kad daugiau zmoniu 
+
+igyvendinti kad virs rankos
+
+gal sita? https://www.youtube.com/watch?v=D1b_wZF81X0
