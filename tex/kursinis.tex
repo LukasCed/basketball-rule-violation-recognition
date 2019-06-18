@@ -20,8 +20,8 @@
 \faculty{Matematikos ir informatikos fakultetas}
 \department{Programų sistemų katedra}
 \papertype{Kursinis darbas}
-\title{Krepšinio taisyklių pažeidimo aptikimas}
-\titleineng{Recognizing Violations of Basketball Rules using Computer Vision}
+\title{Krepšinio taisyklių pažeidimo automatinis nustatymas}
+\titleineng{Recognizing violations of basketball rules using computer vision}
 \status{3 kurso 6 grupės studentas}
 \author{Lukas Cedronas}
 % \secondauthor{Vardonis Pavardonis}   % Pridėti antrą autorių
@@ -38,7 +38,7 @@
 \tableofcontents
 
 \sectionnonum{Įvadas}
-Krepšinio dinamiškumas, intensyvumas ir populiarumas lemia tai, jog teisėjų priimami sprendimai gali būti šališki \cite{ProfitableBias} arba, dėl tokių faktorių kaip nuovargis, prastai pagrįsti \cite{MissedCalls}. Norint išvengti žmogiškųjų klaidų ir teisėjavimą padaryti objektyvesniu, į pagalbą galima pasitelkti kompiuterines technologijas. Technologijos, skirtos žaidimo įrašymui realiu laiku ir prieigai prie nufilmuotos medžiagos žaidimo metu teisėjų naudojama jau nuo seno, tačiau sritis, kurioje krepšinis dar nėra pažengęs, bet iš kurios galėtų gauti nemažai naudos – kompiuterinė rega (\textit{angl.} computer vision). Pasitelkus priemones, skirtas vaizdo apdorojimui, analizei ir automatizuotam sprendimų priėmimui galima iki tam tikro laipsnio teisėjavimo naštą perkelti kompiuteriui. Kompiuterio pagalba sporte ar sporto teisėjavime nėra naujiena – technologijų sėkmę gali paliudyti  2018 m. FIFA pasaulio čempionate naudotas Video Assistant Referee, peržiūrintis ir įvertinantis teisėjo padarytą nuosprendį. Tačiau nepaisant to, ši sritis nėra pakankamai pažengusi, kad visiškai pakeistų teisėjus. Bet kokiai programinei įrangai išanalizuoti vaizdo įrašą ir prieiti prie teisingo sprendimo trukdo tokie faktoriai kaip vaizdo kokybė, pasirinktas kameros kampas, judančių objektų susiliejimas, žaidėjų bei kamuolio spalvų panašumas, objektų smulkumas. Šiame darbe analizuoti kompiuterinės regos metodai, siekiant išbandyti sukurto atpažinimo algoritmo efektyvumą kiek galima labiau atsiribojant nuo techninių kliūčių, bus išbandomi vaizdine medžiaga, kur:
+Krepšinio dinamiškumas, intensyvumas ir populiarumas lemia tai, jog teisėjų priimami sprendimai gali būti šališki \cite{ProfitableBias} arba, dėl tokių faktorių kaip nuovargis, prastai pagrįsti \cite{MissedCalls}. Norint išvengti žmogiškųjų klaidų ir teisėjavimą padaryti objektyvesniu, į pagalbą galima pasitelkti kompiuterines technologijas. Technologijos, skirtos žaidimo įrašymui realiu laiku ir prieigai prie nufilmuotos medžiagos žaidimo metu teisėjų naudojamos jau nuo seno, tačiau sritis, kurioje krepšinis dar nėra pažengęs, bet iš kurios galėtų gauti nemažai naudos – kompiuterinė rega (\textit{angl.} computer vision). Pasitelkus priemones, skirtas vaizdo apdorojimui, analizei ir automatizuotam sprendimų priėmimui galima iki tam tikro laipsnio teisėjavimo naštą perkelti kompiuteriui. Kompiuterio pagalba sporte ar sporto teisėjavime nėra naujiena – technologijų sėkmę gali paliudyti  2018 m. FIFA pasaulio čempionate naudotas Video Assistant Referee, peržiūrintis ir įvertinantis teisėjo padarytą nuosprendį. Tačiau nepaisant to, ši sritis nėra pakankamai pažengusi, kad visiškai pakeistų teisėjus. Bet kokiai programinei įrangai išanalizuoti vaizdo įrašą ir prieiti prie teisingo sprendimo trukdo tokie faktoriai kaip vaizdo kokybė, pasirinktas kameros kampas, judančių objektų susiliejimas, žaidėjų bei kamuolio spalvų panašumas, objektų smulkumas. Šiame darbe analizuoti kompiuterinės regos metodai, siekiant išbandyti sukurto atpažinimo algoritmo efektyvumą kiek galima labiau atsiribojant nuo techninių kliūčių, praktiškai išbandomi vaizdine medžiaga, kur:
 \begin{itemize}[topsep=5pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
  \item Tarp fono, žaidėjo ir kamuolio turi būti kiek galima didesnis kontrastas.
  \item Kamuolio spalva – ryški, aukštas sodrumas (\textit{angl.} saturation).
@@ -123,7 +123,7 @@ Kontūrai vėliau užpildomi, rezultate gaunant visą plotą, kuriame yra kamuol
 Čia aprašomas objektų padėties atpažinimas bei apibendrintas algoritmas, kaip iš vaizdo gaunama reikiama informacija apie tai, ar kamuolys rankose bei  atliktas žingsnis.
 \subsection{Rankos, kamuolio, pėdų  atpažinimas ir tarpusavio sąryšiai}
 Atlikus segmentavimą, morfologines transformacijas bei kontūrų užpildymą, turima pakankamai informacijos teiginių apie objektų tarpusavio sąryšius konstravimui.
-OpenCV visus paveikslėlius galima reprezentuoti loginėmis matricomis. Tad ranka, kamuolys bei pėdos saugomi kaip loginės matricos, kas įgalina efektyviai atlikti logines operacijas.
+OpenCV visus paveikslėlius galima reprezentuoti loginėmis matricomis. Tad ranka, kamuolys bei pėdos (batai) saugomi kaip loginės matricos, kas įgalina efektyviai atlikti logines operacijas.
 \subsection{Kamuolio laikymo ir žingsniavimo atpažinimo algoritmas}
 Aukščiau aprašytas procedūras galima apibendrintai aprašyti algoritmu, kuriuo vadovaujasi ir sukurta programinė įranga.
 \begin{enumerate}[topsep=5pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
@@ -158,7 +158,7 @@ Tegu $t_S$- laiko momentas, žymintis žingsnio įvykį $S$. Intervalas $({t_R}_
 
 Siekiant išvengti tokių trukdžių, nuspręsta naudoti skaitiklio principą: saugomas dar vienas kintamasis - skaitiklis, kuris, išėjus kamuoliui iš rankų ribų, mažinamas, ir tik pasiekus reikšmę 0 laikoma, kad kamuolys nebėra rankose. Taip pasiekiamas laikymo rankose intervalo stabilumas - menki skaičiavimo trukdžiai nebesuskaldo intervalo, ir jeigu kamuolys tikrai nebėra rankose - programa tą atpažins jau po kelių kadrų ir žingsnius pradės skaičiuoti iš naujo. Tiesa, didžiausia skaitiklio galima reikšmė turi būti pakankamai maža, kad žingsnis nebūtų užregistruojamas jau kamuoliui nebesant rankose. 
 
-\section{Atlikti bandymai, atvejų analizė ir tolimesni darbai}
+\section{Atlikti bandymai ir atvejų analizė}
 Šiame skyriuje aprašomas vaizdo medžiagos rinkimas, sukurtos programos išbandymas bei plačiau nagrinėjami atvejai, kuriuose algoritmas neteisingai suklasifikavo duotąją vaizdo medžiagą. 
 \subsection{Atlikti bandymai}
 Su Xiaomi Redmi 5 Plus kamera skirtingais dienos laikais, iš skirtingų kampų buvo nufilmuoti 5 vaizdo įrašai, kurie vėliau sukarpyti į 5 sekundžių fragmentus. Kiekviename vaizdo įrašo fragmente žingsnių taisyklės pažeidimas arba įvyksta, arba ne. Atliekant sukurtos programos bandymus su nufilmuota vaizdo medžiaga pastebėtos kelios problemos: šešėlyje filmuota medžiaga yra netinkama, nes dėl prastos kameros kokybės susilieja fonas ir kamuolys bei pirštinės - visų objektų sodrumas nukrypsta į pilką ir tuomet sunku atskirti skirtingo atspalvio spalvas (kita vertus, gerame apšvietime fonas nebuvo tokia didelė problema, nei tikėtasi - segmentacijos metu buvo puikiai susidorota su skirtumais tarp žalio kamuolio ir medžių). Lygiai taip pat spalvos atpažinimą pasunkina ir žaidėjo nuotolis nuo kameros - prisotinimas, kaip ir filmuojant šešėlyje, nukrypsta į pilką. 
@@ -197,27 +197,42 @@ Panagrinėjus antrąjį atvejį, problemą nuspręsta spręsti euristiškai: vyk
 \subsection{Kiti atvejai}
  Vaizdo medžiagoje buvo keli ribiniai atvejai, kuriuose sunku pasakyti, ar žaidėjas pažeidė taisyklę ar ne. Vienas iš vaizdo įrašų žaidėjas sumuša kamuolį, prieš jį suimant padaro vieną žingsnį (NBA terminologijoje tai vadinasi \textit{gather step}), tuomet kamuolį pilnai suima ir padėjęs du žingsnius išeina už kadro. Tokio tipo dvižingsnis dažnai patraukia teisėjų ir žiūrovų dėmesį, tačiau realiu laiku dažnai sunku pasakyti, ar taisyklė pažeista, ar ne: vaizdo medžiagą parodžius trims žmonėms du iš jų pareiškė, jog žingsnių taisyklė pažeista. Programa, apdorojusi vaizdo medžiagą sugebėjo teisingai nuspręsti, jog taisyklė nėra pažeista. Kitas atvejis - vaizdo įraše atliekamas judesys, vadinamas „eurožingsniu“ (\textit{angl.} eurostep), tačiau padedant vieną papildomą žingsnį. Judesys atliktas greitai, dėl to realiu laiku stebėtojui gali būti sunku nustatyti, ar taisyklė pažeista. Programa teisingai atpažino šį ribinį atvejį kaip pažeidžiantį taisyklę. 
 
-\subsection{Tolimesni darbai ir rekomendacijos} \label{Further work}
-Iš išnagrinėtų atvejų matyti, kad nepasant to, jog algoritmas pakankamai neblogai susidoroja su pateikta vaizdo medžiaga, segmentacija pagal spalvą yra silpnoji atpažinimo dalis. Objektų atpažinimas pagal spalvą yra labai jautrus išoriniams faktoriams, tad tolimesniuose darbuose rekomenduojama naudoti geresnės kokybės kamerą ir patyrinėti kitus vaizdų atpažinimo metodus - pavyzdžiui, rankas/kojas/kamuolį atrasti naudojantis neuroniniais tinklais, naudojantis Haar kaskadų ar kitais metodais.
+\section{Tolimesni darbai ir rekomendacijos} \label{Further work}
+Iš išnagrinėtų atvejų matyti, kad nepaisant to, jog algoritmas pakankamai neblogai susidoroja su pateikta vaizdo medžiaga, segmentacija pagal spalvą yra silpnoji atpažinimo dalis, taip pat galimi patobulinimai pažeidimo atpažinimo algoritme.
+
+\subsection{Kompiuterinės regos metodų rekomendacijos}
+
+  \begin{itemize}[topsep=2pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
+  	\item Objektų atpažinimas pagal spalvą yra labai jautrus išoriniams faktoriams, tad tolimesniuose darbuose rekomenduojama naudoti geresnės kokybės kamerą ir patyrinėti kitus vaizdų atpažinimo metodus - pavyzdžiui, rankas/kojas/kamuolį atrasti naudojantis neuroniniais tinklais, naudojantis Haar kaskadų ar kitais metodais.
+  \end{itemize}
  
-Taip pat siūloma patobulinti taisyklės pažeidimo atpažinimo algoritmą: atlikto žingsnio aptikimas neįmanomas tada, kai žaidėjas stebimas ne šonu, o iš priekio; taip pat daug neteisingų žingsnių priskaičiuojama tada, kai pėdos pastatytos šalia viena kitos ir algoritmas negali apsispręsti, ar batai uždengia vienas kitą (ko pasekoje priskaičiuojamas žingsnis), ar ne.
+ \subsection{Taisyklės pažeidimo atpažinimo algoritmo rekomendacijos ir tolimesni darbai}
+ \begin{itemize}[topsep=2pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
+ \item Siūloma patobulinti taisyklės pažeidimo atpažinimo algoritmą: atlikto žingsnio aptikimas neįmanomas tada, kai žaidėjas stebimas ne šonu, o iš priekio; taip pat daug neteisingų žingsnių priskaičiuojama tada, kai pėdos pastatytos šalia viena kitos ir algoritmas negali apsispręsti, ar batai uždengia vienas kitą (ko pasekoje priskaičiuojamas žingsnis), ar ne.
 
-Kitas gan svarbus taisyklės atpažinimo algoritmo trūkumas susijęs su žingsnių, vedančių link taisyklės pažeidimo, skaičiavimu. Tuo trumpu intervalu, kai kamuolys atsimušęs nuo žemės trumpam užsilieka rankoje, greitas žaidėjas gali atlikti kelis žingsnius - taip bus neteisingai atpažintas taisyklės pažeidimas. Ši problema sąlyginai lemia ir aukščiau aprašytą problemą su papildomų žingsnių priskaičiavimu, kai pėdos arti viena kitos.
+ \item Kitas gan svarbus taisyklės atpažinimo algoritmo trūkumas susijęs su žingsnių, vedančių link taisyklės pažeidimo, skaičiavimu. Tuo trumpu intervalu, kai kamuolys atsimušęs nuo žemės trumpam užsilieka rankoje, greitas žaidėjas gali atlikti kelis žingsnius - taip bus neteisingai atpažintas taisyklės pažeidimas. Ši problema sąlyginai lemia ir aukščiau aprašytą problemą su papildomų žingsnių priskaičiavimu, kai pėdos arti viena kitos.
 
-Algoritmas negeba atpažinti taisyklės pažeidimo, jei kamuolys yra suimtas ar išmestas į orą ir vėl pagautas. Šioms problemoms išspręsti siūloma skaičiuoti rankos poziciją lyginant su kamuoliu - informacija apie tai, ar ranka yra virš kamuolio, ar po juo (reiškia, kamuolys buvo suimtas) padėtų taisyklingiau atpažinti žingsnius - po kamuolio suėmimo mušinėjimas nebėra galimas, ir atvirkščiai - jei kamuolys nėra suimtas, žingsnių skaičiuoti ir nereikia. 
+ \item Algoritmas negeba atpažinti taisyklės pažeidimo, jei kamuolys yra suimtas ar išmestas į orą ir vėl pagautas. Šioms problemoms išspręsti siūloma skaičiuoti rankos poziciją lyginant su kamuoliu - informacija apie tai, ar ranka yra virš kamuolio, ar po juo (reiškia, kamuolys buvo suimtas) padėtų taisyklingiau atpažinti žingsnius - po kamuolio suėmimo mušinėjimas nebėra galimas, ir atvirkščiai - jei kamuolys nėra suimtas, žingsnių skaičiuoti ir nereikia. 
 
-Visada yra tikimybė, jog žaidėjas užstos kamuolį, tuomet algoritmas negali išgauti jokios informacijos apie jo poziciją rankose. Šią problemą galima išspręsti samprotaujant, jog jei kamuolio nematome ilgą laiką, labai tikėtina, kad jis yra laikomas rankose, o ne mušinėjamas. 
+ \item Visada yra tikimybė, jog žaidėjas užstos kamuolį, tuomet algoritmas negali išgauti jokios informacijos apie jo poziciją rankose. Šią problemą galima išspręsti samprotaujant, jog jei kamuolio nematome ilgą laiką, labai tikėtina, kad jis yra laikomas rankose, o ne mušinėjamas. 
+\end{itemize}
 
-Verta atkreipti dėmesį ir į algoritmo įgyvendinimo optimizavimą: dabartinis algoritmas apdorodamas video vidutiniškai užtrunka du kartus ilgiau, nei trunka pats video. Apdorojimo greitį galėtų pasparėti, jei būtų išnaudojama vaizdo plokštės (\textit{angl.} GPU) galimybė lygiagrečiai atlikti daug skaičiavimų. Tam puikiai tinka OpenCV, kuris su papildomais nustatymais bei bibliotekomis įgalina vaizdo plokštės naudojimą. 
-
-Galų gale siekiant įsitikinti algoritmo efektyvumu, reikėtų jį išbandyti su žymiai daugiau vaizdinės medžiagos. 
+  \subsection{Optimizavimo rekomendacijos}
+   \begin{itemize}[topsep=2pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
+\item Verta atkreipti dėmesį ir į algoritmo įgyvendinimo optimizavimą: dabartinis algoritmas apdorodamas video vidutiniškai užtrunka du kartus ilgiau, nei trunka pats video. Apdorojimo greitį galėtų paspartėti, jei būtų išnaudojama vaizdo plokštės (\textit{angl.} GPU) galimybė lygiagrečiai atlikti daug skaičiavimų. Tam puikiai tinka OpenCV, kuris su papildomais nustatymais bei bibliotekomis įgalina vaizdo plokštės naudojimą. 
+\end{itemize}
+  \subsection{Vaizdo medžiagos rekomendacijos}
+  \begin{itemize}[topsep=2pt,itemsep=-1ex,partopsep=2ex,parsep=2ex]
+ \item Siūloma vaizdo įrašus filmuoti kuo galima geresne kamera.
+\item Siekiant įsitikinti algoritmo efektyvumu, reikėtų jį išbandyti su žymiai daugiau vaizdinės medžiagos. 
+\end{itemize}
 
 \sectionnonum{Rezultatai ir išvados}
 Šiame darbe buvo atlikta kompiuterinės regos metodų analizė, Python programavimo kalba įgyvendinti segmentacijos, morfologiniai ir kontūrų radimo algoritmai, įgyvendintas NBA 10 taisyklės 13 skyriuje aprašytos taisyklės pažeidimo atpažinimo algoritmas, apdorojantis iš vaizdų atpažinimo algoritmo gautą informaciją. Sukurta programa buvo išbandyta su realia vaizdo medžiaga.
 
  Vaizdo įrašus, kuriuose pažeista taisyklė, programa suklasifikavo 72.7\% tikslumu. Įrašus, kuriuose nėra pažeista taisyklė, programa suklasifikavo 90.9\% tikslumu. Didžiausias taisyklės atpažinimo klaidų šaltinis - prastas apšvietimas, dėl kurio segmentacija pagal spalvą nesugeba tinkamai išgauti objektų.
  
-Nepaisant to, programa puikiai susidorojo su atvejais, kuriuose apšvietimas yra geras, net ir tais, kuriuose pažeidimą pamatyti plika akimi sudėtinga. Tai leidžia daryti išvadą, jog naudoti segmentacijos, morfologiniai ir kontūrų radimo algoritmai yra tinkami norint atpažinti NBA 10 taisyklės 13 skyriuje aprašytus pažeidimus nuo pašalinių trikdžių izoliuotuose vaizdo įrašuose bent 70\% tikslumu. Tikslumas būtų pagerintas įgyvendinus \ref{Further work} poskyriuje aprašytas rekomendacijas.
+Nepaisant to, programa puikiai susidorojo su atvejais, kuriuose apšvietimas yra geras, net ir tais, kuriuose pažeidimą pamatyti plika akimi sudėtinga. Tai leidžia daryti išvadą, jog naudoti segmentacijos, morfologiniai ir kontūrų radimo algoritmai yra tinkami norint atpažinti NBA 10 taisyklės 13 skyriuje aprašytus pažeidimus nuo pašalinių trukdžių izoliuotuose vaizdo įrašuose bent 70\% tikslumu. Tikslumas būtų pagerintas įgyvendinus \ref{Further work} skyriuje aprašytas rekomendacijas.
 
 
 \printbibliography[heading=bibintoc]  % Šaltinių sąraše nurodoma panaudota

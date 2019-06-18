@@ -85,6 +85,9 @@ class Algorithm:
 			(x,y),radius = cv2.minEnclosingCircle(ball_contour)
 			center = (int(x),int(y))
 			cv2.circle(mask_for_ball,center,int(radius),(255,0,0), -1)
+			bc, h = find_contours(mask_for_ball)
+			cv2.drawContours(img, bc, -1, (0,255,0), 3)
+
 
 			# fill hand
 			cv2.fillPoly(mask_for_hand, color = (255, 0, 0), pts = hand_contours )

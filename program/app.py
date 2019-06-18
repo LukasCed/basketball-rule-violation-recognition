@@ -7,10 +7,10 @@ from Algorithm import Algorithm
 from ImageProcessingUtils import print_img
 	
 
-vid = cv2.VideoCapture('vidai/10T.mp4')
+vid = cv2.VideoCapture('vidai/normal.mp4')
 algorithm = Algorithm()
 
-while(not algorithm.turnover):
+while(True):
     # Capture frame-by-frame
 	ret, frame = vid.read()
 	frame = algorithm.execute(frame)
